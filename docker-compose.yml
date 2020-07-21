@@ -1,0 +1,18 @@
+version: '2.1'
+
+services:
+  garamond-instance-1:
+    image: garamond:garamond
+    ports:
+      - "${GARAMOND_HTTP_PORT}"
+    volumes:
+      - ${GARAMOND_DATA_ROOT_DIR}:/data/
+    environment:
+      DATA_CONFIG_FILE: ${GARAMOND_DATA_CONFIG_FILE}
+      HTTP_PORT: ${GARAMOND_HTTP_PORT}
+      LOG_LEVEL: ${GARAMOND_LOG_LEVEL}
+
+  nginx:
+    image: repompoc:nginx_server
+    ports:
+      - "${NGINX_HOST_PORT}:80"
