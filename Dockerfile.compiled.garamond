@@ -20,6 +20,11 @@ WORKDIR /garamond
 # Copy stuff from your host to your current location.
 RUN git clone https://github.com/zgornel/Garamond.jl .
 RUN julia --project  -e "using Pkg; Pkg.activate(); Pkg.instantiate(); Pkg.precompile()"
+COPY ./Manifest.gars.toml ./apps/gars/Manifest.toml
+
+# Build
+RUN cd build && julia ./build_apps.jl
+RUN rm -rf ./apps ./docs ./src ./test
 
 # Run the specified command within the container. MODEL_FILE should be specified in docker-compose.yml
 ENV DATA_CONFIG_FILE=/config.json
@@ -30,5 +35,5 @@ ENV LOG_LEVEL="debug"
 # Inform Docker that the container is listening on the specified port at runtime.
 EXPOSE ${HTTP_PORT}
 
-# Command that relies on the Julia gars.jl script
-CMD julia apps/gars/src/gars.jl --data-config $DATA_CONFIG_FILE --http-port $HTTP_PORT --http-ip $IP --log-level $LOG_LEVEL
+# This is the command that should be run if the build step is done
+CMD build/compiled/gars/bin/gars --data-config $DATA_CONFIG_FILE --http-port $HTTP_PORT --http-ip $IP --log-level $LOG_LEVEL
