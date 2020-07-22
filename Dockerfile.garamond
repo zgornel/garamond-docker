@@ -23,7 +23,7 @@ RUN julia --project  -e "using Pkg; Pkg.activate(); Pkg.instantiate(); Pkg.preco
 
 # Run the specified command within the container. MODEL_FILE should be specified in docker-compose.yml
 ENV DATA_CONFIG_FILE=/config.json
-ENV HTTP_PORT=9000
+ENV HTTP_PORT=9001
 ENV IP="0.0.0.0"
 ENV LOG_LEVEL="debug"
 
@@ -31,4 +31,4 @@ ENV LOG_LEVEL="debug"
 EXPOSE ${HTTP_PORT}
 
 # Command that relies on the Julia gars.jl script
-CMD julia apps/gars/src/gars.jl --data-config $DATA_CONFIG_FILE --http-port $HTTP_PORT --http-ip $IP --log-level $LOG_LEVEL
+CMD julia apps/gars/src/gars.jl --data-config $DATA_CONFIG_FILE -i 8999 --http-port $HTTP_PORT --http-ip $IP --log-level $LOG_LEVEL

@@ -1,0 +1,33 @@
+	{
+        "data_loader_name": "juliadb_loader",
+        "data_loader_arguments": ["/data/generated_data_100_samples.csv"],
+        "data_sampler_name": "identity_sampler",
+        "id_key": "id",
+        "vectors_eltype": "Float32",
+        "embedders": [
+            {
+                "id": "embedder_1",
+                "description": "BM25+RP embedder",
+                "embeddable_fields": ["RandString", "StringField", "StringField2", "IntField"],
+                "stem_words": false,
+                "language": "english",
+                "vectors": "bm25",
+                "vectors_transform": "rp",
+                "vectors_dimension": 50,
+                "oov_policy" : "large_vector"
+            }
+        ],
+        "searchers": [
+            {
+                "id": "searcher_1",
+                "id_aggregation": "aggid",
+                "description": "A searcher using BM25+RP embeddings and naive indexing",
+                "enabled": true,
+                "indexable_fields": ["RandString", "StringField", "StringField2", "IntField"],
+                "data_embedder": "embedder_1",
+                "search_index": "naive",
+                "score_alpha": 0.4,
+                "score_weight": 0.8
+            }
+        ]
+    }
